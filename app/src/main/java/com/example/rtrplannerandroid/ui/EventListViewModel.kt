@@ -60,15 +60,6 @@ class EventListViewModel @Inject constructor(
         initialValue = EventListState(isLoading = true)
     )
 
-    fun addTestEvent() = CoroutineScope(Dispatchers.IO).launch {
-        eventRepository.createEvent(
-            "Test Title",
-            "Test Description",
-            "test Location",
-            Calendar.getInstance()
-        )
-    }
-
     private fun handleAsync(events: List<Event>?): Async<List<Event>> {
         if (events == null) {
             return Async.Error(R.string.async_error)

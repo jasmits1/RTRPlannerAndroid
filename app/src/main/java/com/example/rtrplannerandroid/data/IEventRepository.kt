@@ -9,6 +9,6 @@ interface IEventRepository {
 
     fun getEventByUri(eventId: String): Flow<Event?>
 
-    suspend fun createEvent(title: String, description: String, location: String, eventDate: Calendar)
+    suspend fun createEvent(id: String?, title: String, description: String, location: String, eventDate: Calendar)
 
 }

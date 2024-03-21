@@ -26,13 +26,14 @@ class EventRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createEvent(
+        id: String?,
         title: String,
         description: String,
         location: String,
         eventDate: Calendar
     ) {
         localDataSource.upsert(Event(
-            id = UUID.randomUUID().toString(),
+            id = (id?: UUID.randomUUID().toString()),
             title = title,
             description = description,
             location = location,

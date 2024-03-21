@@ -3,8 +3,14 @@
     <string name="event_list_title">All Events</string>
     <string name="daily_summary_title">Daily Summary</string>
     <string name="open_drawer">Open Drawer</string>
-    <string name="add_event">Add Event</string>
+    <string name="add_event">New Event</string>
     <string name="edit_event">Edit Event</string>
+    <string name="menu_back">Back</string>
+    <string name="save_event">Save Event</string>
+
+    <string name="title_hint">Title</string>
+    <string name="description_hint">Description</string>
+    <string name="location_hint">Location</string>
 
     <string name="async_error">Error Loading Data</string>
 </resources>
