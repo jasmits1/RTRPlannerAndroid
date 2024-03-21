@@ -2,7 +2,6 @@ package com.example.rtrplannerandroid.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.rtrplannerandroid.PlannerDestinationsArgs
 import com.example.rtrplannerandroid.data.IEventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +20,8 @@ data class EditEventState (
     val description: String = "",
     val location: String = "",
     val eventDate: Calendar = Calendar.getInstance(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isSaved: Boolean = false
 )
 
 @HiltViewModel
@@ -40,9 +40,11 @@ class EditEventViewModel @Inject constructor(
             title = uiState.value.title,
             description = uiState.value.description,
             location =  uiState.value.location,
-            //eventDate = uiState.value.eventDate
-            eventDate = Calendar.getInstance()
+            eventDate = uiState.value.eventDate
         )
+        _uiState.update {
+            it.copy(isSaved = true)
+        }
     }
 
     fun updateTitle(newTitle: String) {
@@ -63,9 +65,26 @@ class EditEventViewModel @Inject constructor(
         }
     }
 
-    fun updateDate(newDate: Calendar) {
+    fun updateDate(newYear: Int, newMonth: Int, newDay: Int) {
         _uiState.update {
-            it.copy(eventDate = newDate)
+            //it.copy(year = newYear, month = newMonth, day = newDay)
+            val cal = Calendar.getInstance()
+            cal.set(newYear, newMonth, newDay, uiState.value.eventDate.get(Calendar.HOUR_OF_DAY), uiState.value.eventDate.get(Calendar.MINUTE))
+            it.copy(eventDate = cal)
+        }
+    }
+
+    fun updateTime(newHour: Int, newMinute: Int) {
+        _uiState.update {
+            val cal = Calendar.getInstance()
+            cal.set(
+                uiState.value.eventDate.get(Calendar.YEAR),
+                uiState.value.eventDate.get(Calendar.MONTH),
+                uiState.value.eventDate.get(Calendar.DAY_OF_MONTH),
+                newHour,
+                newMinute
+            )
+            it.copy(eventDate = cal)
         }
     }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RTRPlannerAndroid</string>
     <string name="event_list_title">All Events</string>
-    <string name="daily_summary_title">Daily Summary</string>
+    <string name="daily_summary_title">Today</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="add_event">New Event</string>
     <string name="edit_event">Edit Event</string>

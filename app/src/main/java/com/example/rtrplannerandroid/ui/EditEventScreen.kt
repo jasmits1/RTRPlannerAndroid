@@ -1,6 +1,5 @@
 package com.example.rtrplannerandroid.ui
 
-import android.widget.DatePicker
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -20,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,17 +27,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rtrplannerandroid.R
 import com.example.rtrplannerandroid.ui.components.EditEventTopAppBar
-import com.example.rtrplannerandroid.ui.components.EventListTopAppBar
+import com.vsnappy1.datepicker.DatePicker
+import com.vsnappy1.datepicker.data.model.DatePickerDate
+import com.vsnappy1.timepicker.TimePicker
+import com.vsnappy1.timepicker.data.model.TimePickerTime
 import java.util.Calendar
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
 fun EditEventScreen(
     @StringRes title: Int,
+    onUpdate: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditEventViewModel = hiltViewModel(),
@@ -67,8 +68,16 @@ fun EditEventScreen(
             viewModel::updateDescription,
             viewModel::updateLocation,
             viewModel::updateDate,
+            viewModel::updateTime,
             modifier = Modifier.padding(paddingValues)
         )
+
+        //Navigate back on save
+        LaunchedEffect(uiState.isSaved) {
+            if (uiState.isSaved) {
+                onUpdate()
+            }
+        }
     }
 }
 
@@ -82,7 +91,8 @@ fun EditEventContent(
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onLocationChanged: (String) -> Unit,
-    onDateChanged: (Calendar) -> Unit,
+    onDateChanged: (Int, Int, Int) -> Unit,
+    onTimeChanged: (Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column (
@@ -127,20 +137,49 @@ fun EditEventContent(
             maxLines = 1,
             colors = textFieldColors
         )
+        MyDatePicker(
+            eventDate = eventDate,
+            onDateChanged = onDateChanged
+        )
+        MyTimePicker(
+            eventDate = eventDate,
+            onTimeChanged = onTimeChanged)
+
+
     }
 }
 
 
 @Composable
 fun MyDatePicker(
-    eventDate: Calendar
+    eventDate: Calendar,
+    onDateChanged: (Int, Int, Int) -> Unit
 ) {
+    DatePicker(
+        onDateSelected = onDateChanged,
+        date = DatePickerDate(
+            year = eventDate.get(Calendar.YEAR),
+            month = eventDate.get(Calendar.MONTH),
+            day = eventDate.get(Calendar.DAY_OF_MONTH))
+    )
+}
 
-    //DatePicker()
+@Composable
+fun MyTimePicker(
+    eventDate: Calendar,
+    onTimeChanged: (Int, Int) -> Unit
+) {
+    TimePicker(
+        onTimeSelected = onTimeChanged,
+        time = TimePickerTime(
+            hour = eventDate.get(Calendar.HOUR_OF_DAY),
+            minute = eventDate.get(Calendar.MINUTE)
+        )
+    )
 }
 
 @Preview
 @Composable
 private fun EditEventPreview() {
-    EditEventScreen(R.string.add_event, {})
+    EditEventScreen(R.string.add_event, {}, {})
 }

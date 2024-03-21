@@ -70,9 +70,11 @@ fun PlannerNavGraph(
             )
         )
         {entry ->
-            //val eventId = entry.arguments?.getString(EVENT_ID_ARG)
             EditEventScreen(
                 title = entry.arguments?.getInt(TITLE_ARG)!!,
+                onUpdate = {
+                           navActions.navigateToEventList()
+                },
                 onBack = { navController.popBackStack() }
             )
         }

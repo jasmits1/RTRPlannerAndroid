@@ -18,10 +18,11 @@ import com.example.rtrplannerandroid.R;
 
 @Composable
 fun EventListTopAppBar(
+    @StringRes title: Int,
     openDrawer: () -> Unit
 ) {
     TopAppBar(
-        title = { Text(text = stringResource(id = R.string.event_list_title)) },
+        title = { Text(text = stringResource(id = title)) },
         navigationIcon = {
             IconButton(onClick = openDrawer) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
@@ -63,5 +64,5 @@ fun EditBarPreview() {
 @Preview
 @Composable
 fun EventListBarPreview() {
-    EventListTopAppBar({})
+    EventListTopAppBar(R.string.event_list_title, {})
 }

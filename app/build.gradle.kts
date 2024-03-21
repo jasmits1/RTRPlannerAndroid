@@ -94,6 +94,9 @@ dependencies {
     implementation(libs.accompanist.appcompat.theme)
     implementation(libs.accompanist.swiperefresh)
 
+    implementation(libs.composedatepicker)
+
+
     debugImplementation(composeBom)
     debugImplementation(libs.androidx.compose.ui.tooling.core)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

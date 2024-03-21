@@ -29,13 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+//import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rtrplannerandroid.R;
 import com.example.rtrplannerandroid.data.Event
+import com.example.rtrplannerandroid.ui.components.EventListContent
 import com.example.rtrplannerandroid.ui.components.EventListTopAppBar
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+//@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun EventListScreen(
     openDrawer: () -> Unit,
@@ -49,6 +50,7 @@ fun EventListScreen(
         scaffoldState = scaffoldState,
         topBar = {
             EventListTopAppBar (
+                title = R.string.event_list_title,
                 openDrawer = openDrawer
             )
         },
@@ -64,68 +66,6 @@ fun EventListScreen(
             EventListContent(
                 events = uiState.events,
                 modifier = Modifier.padding(paddingValues))
-        }
-    }
-}
-
-@Composable
-fun EventListContent(
-    events: List<Event>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn {
-        items(events) {event ->
-            EventCard(event)
-        }
-    }
-}
-
-@Composable
-fun EventCard(
-    event: Event
-) {
-    Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-        elevation = 8.dp,
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = event.title,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    text = event.description,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Justify
-                )
-            }
-            Column (
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.End){
-                Text(
-                    text = event.getDateString(),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    text = event.getTimeString(),
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Justify
-                )
-            }
         }
     }
 }
