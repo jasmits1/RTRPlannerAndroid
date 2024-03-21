@@ -4,4 +4,7 @@
     <string name="daily_summary_title">Daily Summary</string>
     <string name="open_drawer">Open Drawer</string>
     <string name="add_event">Add Event</string>
+    <string name="edit_event">Edit Event</string>
+
+    <string name="async_error">Error Loading Data</string>
 </resources>

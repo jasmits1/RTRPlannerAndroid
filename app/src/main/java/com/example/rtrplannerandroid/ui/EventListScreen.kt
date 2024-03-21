@@ -11,10 +11,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.rtrplannerandroid.R;
 import com.example.rtrplannerandroid.ui.components.EventListTopAppBar
 
@@ -24,6 +27,7 @@ fun EventListScreen(
     openDrawer: () -> Unit,
     onAddEvent: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: EventListViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
     Scaffold(
@@ -35,15 +39,20 @@ fun EventListScreen(
         },
         modifier = modifier.fillMaxSize(),
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddEvent) {
+            //FloatingActionButton(onClick = onAddEvent) {
+            FloatingActionButton(onClick = viewModel::addTestEvent) {
                 Icon(Icons.Filled.Add, stringResource(id = R.string.add_event))
             }
         }
     ) { paddingValues ->
-        Text(
-            text = "Hello, world from EventListScreen",
-            modifier = Modifier.padding(paddingValues)
-        )
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+        if(uiState.events.isNotEmpty()) {
+            Text(
+                text = uiState.events[0].eventDate.time.toString(),
+                modifier = Modifier.padding(paddingValues)
+            )
+        }
     }
 }
 

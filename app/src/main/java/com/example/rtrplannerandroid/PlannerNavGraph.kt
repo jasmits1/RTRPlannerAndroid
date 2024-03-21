@@ -16,7 +16,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.rtrplannerandroid.PlannerDestinationsArgs.EVENT_ID_ARG
+import com.example.rtrplannerandroid.PlannerDestinationsArgs.TITLE_ARG
 import com.example.rtrplannerandroid.ui.DailySummaryScreen
+import com.example.rtrplannerandroid.ui.EditEventScreen
 import com.example.rtrplannerandroid.ui.EventListScreen
 import com.example.rtrplannerandroid.ui.components.AppModalDrawer
 import kotlinx.coroutines.CoroutineScope
@@ -55,9 +58,22 @@ fun PlannerNavGraph(
             AppModalDrawer(drawerState, currentRoute, navActions) {
                 EventListScreen(
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
-                    onAddEvent = { coroutineScope.launch { drawerState.open() } })
+                    onAddEvent = { navActions.navigateToEditEvent(R.string.add_event, null)})
 
             }
+        }
+        composable(
+            PlannerDestinations.EDIT_EVENT_ROUTE,
+            arguments = listOf(
+                navArgument(TITLE_ARG) { type = NavType.IntType},
+                navArgument(EVENT_ID_ARG) { type = NavType.StringType; nullable = true},
+            )
+        )
+        {entry ->
+            val eventId = entry.arguments?.getString(EVENT_ID_ARG)
+            EditEventScreen(
+                title = entry.arguments?.getInt(TITLE_ARG)!!
+            )
         }
     }
 
